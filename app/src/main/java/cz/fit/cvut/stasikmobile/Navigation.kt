@@ -53,7 +53,9 @@ fun Navigation(
         Screens.TopLevel.ProfileRoute.route
 
     Scaffold(
-        bottomBar = {}
+        bottomBar = {
+
+        }
     ) { paddingValues ->
 
         NavHost(navController = navController,
