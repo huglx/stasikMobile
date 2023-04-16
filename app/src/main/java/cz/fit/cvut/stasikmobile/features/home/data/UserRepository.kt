@@ -10,7 +10,6 @@ class UserRepository(
     suspend fun getUsers(): UserResponse{
         return try {
             val result = userRemoteDataSource.getUsers()
-            Log.i("aaaaaaa", ": ")
             UserResponse(result, true)
         }catch (t: Throwable){
             t.message?.let { Log.i("asdasd", it) }

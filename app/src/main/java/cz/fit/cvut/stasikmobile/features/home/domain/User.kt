@@ -3,7 +3,7 @@ package cz.fit.cvut.stasikmobile.features.home.domain
 data class User(
     val username: String,
 
-    val tt: List<Subject>?
+    val subjects: List<Subject>?
 ) {
 
     data class Subject(

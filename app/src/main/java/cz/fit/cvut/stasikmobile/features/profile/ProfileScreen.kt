@@ -2,8 +2,7 @@ package cz.fit.cvut.stasikmobile.features.profile
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -16,14 +15,21 @@ fun ProfileScreen(
     navigateToHome: () -> Unit
 ) {
     val uiState by viewModel.screenState.collectAsStateWithLifecycle()
+
+    if(uiState.nameWasCompleted) {
+        LaunchedEffect(Unit) {
+            navigateToHome()
+        }
+    }
+
     Column(
-        Modifier.fillMaxWidth().padding(10.dp)
+        Modifier
+            .fillMaxWidth()
+            .padding(10.dp)
     ) {
 
         Text("Введи блин свой ник в косе потом сможеш поменять)")
-
         Spacer(Modifier.height(4.dp))
-
         TextField(
             value = uiState.name,
             onValueChange = {
@@ -32,10 +38,9 @@ fun ProfileScreen(
             modifier = Modifier.fillMaxWidth(),
         )
 
+
         Button(
-            onClick = {
-                viewModel.saveName()
-                navigateToHome() },
+            onClick = { viewModel.saveName() },
             modifier = Modifier.fillMaxWidth(),
         ) {
             Text("ВПЕРЕД")

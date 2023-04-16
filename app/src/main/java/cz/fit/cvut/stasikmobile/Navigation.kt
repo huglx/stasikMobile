@@ -6,17 +6,14 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import cz.fit.cvut.stasikmobile.features.home.presentetion.HomeScreen
 import cz.fit.cvut.stasikmobile.features.profile.ProfileScreen
-import cz.fit.cvut.stasikmobile.features.profile.ProfileViewModel
-import org.koin.androidx.compose.koinViewModel
+
 
 
 sealed class Screens(val route: String) {
@@ -34,6 +31,8 @@ sealed class Screens(val route: String) {
             override val icon = Icons.Default.Home
             override val name = "Home"
         }
+
+        object SplashRoute: Screens("splash")
     }
 
     companion object {
@@ -41,16 +40,8 @@ sealed class Screens(val route: String) {
     }
 }
 @Composable
-fun Navigation(
-    viewModel: ProfileViewModel = koinViewModel()
-) {
+fun Navigation() {
     val navController = rememberNavController()
-    val appState by viewModel.screenState.collectAsStateWithLifecycle()
-
-    val startDestination = if(appState.nameWasCompleted)
-        Screens.TopLevel.HomeRoute.route
-     else
-        Screens.TopLevel.ProfileRoute.route
 
     Scaffold(
         bottomBar = {
@@ -60,13 +51,15 @@ fun Navigation(
 
         NavHost(navController = navController,
                 modifier = Modifier.padding(paddingValues),
-                startDestination = startDestination
+                startDestination = Screens.TopLevel.HomeRoute.route
             ) {
-            composable(route = Screens.TopLevel.ProfileRoute.route) {
-                ProfileScreen(navigateToHome = { navController.navigate(Screens.TopLevel.HomeRoute.route) })
-            }
             composable(route = Screens.TopLevel.HomeRoute.route) {
-                HomeScreen()
+                HomeScreen(navigateToProfile = { navController.navigate(Screens.TopLevel.ProfileRoute.route) })
+            }
+            composable(route = Screens.TopLevel.ProfileRoute.route) {
+                ProfileScreen(navigateToHome = { navController.navigate(Screens.TopLevel.HomeRoute.route) {
+                    popUpTo(Screens.TopLevel.ProfileRoute.route) {inclusive = true}
+                } })
             }
         }
     }

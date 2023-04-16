@@ -32,15 +32,22 @@ class ProfileViewModel (
         }
     }
 
-    fun saveName() {
+    fun saveName(): Boolean {
         viewModelScope.launch {
             userProfileSource.setName(screenState.value.name)
             userProfileSource.setLogged(true)
+            _screenStateStream.update { state ->
+                state.copy(
+                    name = userProfileSource.getName().first(),
+                    nameWasCompleted = userProfileSource.getLogged().first()
+                )
+            }
         }
+        return true
     }
 }
 
 data class ProfileScreenState(
     val name: String = "",
-    val nameWasCompleted: Boolean = true
+    val nameWasCompleted: Boolean = false
 )
