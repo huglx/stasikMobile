@@ -18,9 +18,11 @@ class UserRetrofitDataSource(
             subjects = tt.map { User.Subject(
                 it.id.toString(),
                 User.Subject.Links(
-                    it.links.course
+                    it.links.course,
+                    it.links.room
                 ),
-                it.starts_at
+                it.starts_at,
+                it.ends_at
             ) }
         )
     }

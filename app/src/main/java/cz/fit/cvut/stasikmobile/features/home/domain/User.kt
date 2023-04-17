@@ -9,10 +9,13 @@ data class User(
     data class Subject(
         val id: String,
         val links: Links,
-        val starts_at: String
+        val starts_at: String,
+        val ends_at: String,
+        var overlapWith: String = ""
     ){
         data class Links(
-            val course: String
+            val course: String,
+            val room: String
         )
     }
 }

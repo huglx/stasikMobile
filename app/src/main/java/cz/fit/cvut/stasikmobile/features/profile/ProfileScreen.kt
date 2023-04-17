@@ -9,7 +9,6 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.koin.androidx.compose.koinViewModel
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProfileScreen(
     viewModel: ProfileViewModel = koinViewModel(),
@@ -31,17 +30,10 @@ fun ProfileScreen(
 
         Text("Введи блин свой ник в косе потом сможеш поменять)")
         Spacer(Modifier.height(4.dp))
-        TextField(
-            value = uiState.name,
-            onValueChange = {
-                    value -> viewModel.onNameChanged(value)
-            },
-            modifier = Modifier.fillMaxWidth(),
-        )
-
+        UserInput(uiState.name, viewModel::onNameChanged)
 
         Button(
-            onClick = { viewModel.saveName() },
+            onClick = { viewModel.saveNameAndLogin() },
             modifier = Modifier.fillMaxWidth(),
         ) {
             Text("ВПЕРЕД")
@@ -51,6 +43,21 @@ fun ProfileScreen(
             ShowError()
         }
     }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun UserInput(
+    input: String,
+    onNameChanged: (String) -> Unit
+) {
+    TextField(
+        value = input,
+        onValueChange = {
+                value -> onNameChanged(value)
+        },
+        modifier = Modifier.fillMaxWidth(),
+    )
 }
 @Composable
 fun ShowError() {

@@ -34,8 +34,7 @@ class ProfileViewModel (
         }
     }
 
-    fun saveName(): Boolean {
-        var isSuccess = false
+    fun saveNameAndLogin() {
         val userName = screenState.value.name
         viewModelScope.launch {
             if(login(userName)) {
@@ -48,7 +47,6 @@ class ProfileViewModel (
                         nameIsWrong = false
                     )
                 }
-                isSuccess = true
             }else {
                 _screenStateStream.update { state ->
                     state.copy(
@@ -56,10 +54,8 @@ class ProfileViewModel (
                         nameIsWrong = true,
                     )
                 }
-                isSuccess = false
             }
         }
-        return isSuccess
     }
 
     private suspend fun login(userName: String): Boolean {

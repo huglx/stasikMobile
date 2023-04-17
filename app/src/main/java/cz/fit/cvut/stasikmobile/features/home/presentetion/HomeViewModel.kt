@@ -39,20 +39,39 @@ class HomeViewModel(
 
     fun fetchData(index: Int) {
         viewModelScope.launch {
+            _homeState.value = HomeScreenState(HomeUIState.Loading)
             val userName = userProfileSource.getName().first()
-            val result = repository.getUsers().users[index].first {
+            val users = repository.getUsers().users[index]
+            val user = users.first {
                 it.username == userName
             }
-            _homeState.update {
-                it.copy(
-                    state = HomeUIState.Data(result)
-                )
+            findOverlapWithOthers(users, user)
+
+            _homeState.value = HomeScreenState(HomeUIState.Loaded(user))
+        }
+    }
+
+    private fun findOverlapWithOthers(users: List<User>, currentUser: User) {
+        users.filter { it != currentUser && it.subjects != null }.forEach { user ->
+            currentUser.subjects?.forEach { subject1 ->
+                user.subjects?.forEach { subject2 ->
+                    if (subject1.starts_at.split("T")[1].split("+")[0] == subject2.starts_at.split("T")[1].split("+")[0]
+                        && subject1.links.room == subject2.links.room
+                    ) {
+                        if (subject1.overlapWith.isEmpty()) {
+                            subject1.overlapWith += user.username
+                        } else {
+                            subject1.overlapWith += ", ${user.username}"
+                        }
+                    }
+                }
             }
         }
     }
 }
 sealed interface HomeUIState{
-    data class Data(val data: User): HomeUIState
+    data class Loaded(val data: User): HomeUIState
+
     object Loading: HomeUIState
 }
 

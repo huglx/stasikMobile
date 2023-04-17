@@ -79,7 +79,10 @@ fun Navigation() {
 @Composable
 fun BottomBar(navController: NavController) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
-    val currentDestination = navBackStackEntry?.destination ?: return
+    val currentDestination = navBackStackEntry?.destination
+    if (currentDestination == null || currentDestination.route == Screens.ProfileRoute.route) {
+        return
+    }
     BottomNavigation {
         Screens.TopLevel.all.forEach { screen ->
             BottomNavigationItem(

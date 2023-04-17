@@ -27,49 +27,61 @@ fun HomeScreen(viewModel: HomeViewModel = koinViewModel(),
     HomeScreen(uiState = uiState, viewModel, navigateToProfile)
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun HomeScreen(
     uiState: LoggingScreenState,
     viewModel: HomeViewModel,
     navigateToProfile: () -> Unit
 ) {
-    Scaffold(
-        topBar = {
 
+    when(val state = uiState.state){
+        LoggingUIState.LoggedIn -> {
+            HomeScreenContent(viewModel)
         }
-    ) { paddingValues ->
-        Column(modifier = Modifier.padding(paddingValues)) {
-            when(val state = uiState.state){
-                LoggingUIState.LoggedIn -> {
-                    HomeScreenContent(viewModel)
-                }
-                LoggingUIState.NotLoggedIn -> {
-                    LaunchedEffect(state) {
-                        navigateToProfile()
-                    }
-                }
+        LoggingUIState.NotLoggedIn -> {
+            LaunchedEffect(state) {
+                navigateToProfile()
             }
         }
     }
 }
+@OptIn(ExperimentalMaterial3Api::class)
 
 @Composable
 fun HomeScreenContent(viewModel: HomeViewModel) {
     val uiState: HomeScreenState by viewModel.homeState.collectAsStateWithLifecycle()
-    Column(modifier = Modifier.fillMaxWidth()) {
+
+    Scaffold(
+        topBar = {}
+    ) { paddingValues ->
         when(val state = uiState.state){
-            is HomeUIState.Data -> {
-                LoadedState(data = state.data)
-                SpinnerList(fetchData = viewModel::fetchData)
+            is HomeUIState.Loaded -> {
+                LoadedState(
+                    subjects = state.data.subjects,
+                    modifier = Modifier.padding(paddingValues),
+                    fetchData = viewModel::fetchData
+                )
             }
             HomeUIState.Loading -> {
                 LoadingState()
             }
         }
     }
-}
 
+}
+@Composable
+fun LoadedState(modifier: Modifier ,subjects: List<User.Subject>?, fetchData: (index: Int) -> Unit) {
+    Column(modifier = modifier.fillMaxSize()) {
+        if (subjects != null) {
+            SpinnerList(fetchData = fetchData)
+            LazyColumn(contentPadding = PaddingValues(all = 8.dp), modifier = Modifier.weight(1f)) {
+                items(subjects) {
+                    SubjectItem(subject = it)
+                }
+            }
+        }
+    }
+}
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun SpinnerList(fetchData: (index: Int) -> Unit) {
@@ -85,6 +97,7 @@ fun SpinnerList(fetchData: (index: Int) -> Unit) {
         }
     ) {
         TextField(
+            modifier = Modifier.fillMaxWidth(),
             readOnly = true,
             value = selectedOptionText,
             onValueChange = {
@@ -127,22 +140,6 @@ private fun LoadingState() {
     }
 }
 
-@Composable
-fun LoadedState(data: User) {
-    Column(modifier = Modifier.fillMaxWidth()) {
-        if(data.subjects != null)
-            Subjects(data.subjects)
-    }
-}
-
-@Composable
-fun Subjects(users: List<User.Subject>) {
-    LazyColumn(contentPadding = PaddingValues(all = 8.dp)) {
-        items(users) {
-            SubjectItem(subject = it)
-        }
-    }
-}
 
 @Composable
 fun SubjectItem(subject: User.Subject) {
@@ -157,6 +154,8 @@ fun SubjectItem(subject: User.Subject) {
         Column() {
             Text(modifier = Modifier.padding(8.dp), text = subject.links.course, fontSize = 16.sp)
             Text(modifier = Modifier.padding(8.dp), text = subject.starts_at, fontSize = 12.sp)
+            Text(modifier = Modifier.padding(8.dp), text = subject.overlapWith, fontSize = 12.sp)
+
         }
     }
 }
