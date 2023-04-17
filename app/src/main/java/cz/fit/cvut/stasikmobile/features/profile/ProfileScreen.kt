@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.koin.androidx.compose.koinViewModel
@@ -45,5 +46,18 @@ fun ProfileScreen(
         ) {
             Text("ВПЕРЕД")
         }
+
+        if(uiState.nameIsWrong) {
+            ShowError()
+        }
     }
+}
+@Composable
+fun ShowError() {
+    Text(
+        text = "Дурак блин введи еще раз",
+        color = Color.Red,
+        style = MaterialTheme.typography.bodySmall,
+        modifier = Modifier.padding(start = 16.dp)
+    )
 }
