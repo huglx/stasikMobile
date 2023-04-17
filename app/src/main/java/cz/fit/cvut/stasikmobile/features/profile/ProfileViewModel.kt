@@ -26,10 +26,10 @@ class ProfileViewModel (
         }
     }
 
-    fun onNameChanged(name: String) {
+    fun onNameChanged(newName: String) {
         _screenStateStream.update { state ->
             state.copy(
-                name = name,
+                name = newName.filter { !it.isWhitespace() },
             )
         }
     }
@@ -64,7 +64,7 @@ class ProfileViewModel (
 
     private suspend fun login(userName: String): Boolean {
         val result = loginRepository.getUsersList()
-        return result.users.contains(userName.trim())
+        return result.users.contains(userName.replace(" ", ""))
     }
 }
 

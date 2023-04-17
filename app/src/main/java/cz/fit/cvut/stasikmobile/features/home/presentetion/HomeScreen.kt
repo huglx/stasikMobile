@@ -35,7 +35,9 @@ private fun HomeScreen(
     navigateToProfile: () -> Unit
 ) {
     Scaffold(
-        topBar = {}
+        topBar = {
+
+        }
     ) { paddingValues ->
         Column(modifier = Modifier.padding(paddingValues)) {
             when(val state = uiState.state){
