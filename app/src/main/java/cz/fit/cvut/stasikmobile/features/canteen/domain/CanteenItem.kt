@@ -5,9 +5,9 @@ data class CanteenItem(
     val price: String,
     val type: Type,
     val image: String?
-)
-
-data class Type(
-    val name: String,
-    val color: String,
-)
+) {
+    data class Type(
+        val name: String,
+        val color: String,
+    )
+}

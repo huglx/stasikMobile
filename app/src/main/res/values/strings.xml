@@ -6,7 +6,4 @@
     <string name="bottom_nav_title_canteen">Canteen</string>
 
     <string name="outdated_data_message">Data fetch failed. Outdated data.</string>
-
-    <string name="login_button">Save and Go</string>
-    <string name="login_failed_message">Dog fact fetch failed</string>
 </resources>

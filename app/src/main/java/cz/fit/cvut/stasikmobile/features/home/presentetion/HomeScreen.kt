@@ -1,6 +1,5 @@
 package cz.fit.cvut.stasikmobile.features.home.presentetion
 
-import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -18,25 +17,16 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import cz.fit.cvut.stasikmobile.features.home.domain.User
 import org.koin.androidx.compose.koinViewModel
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(viewModel: HomeViewModel = koinViewModel(),
                navigateToProfile: () -> Unit
 ) {
-    val uiState: LoggingScreenState by viewModel.loggingState.collectAsStateWithLifecycle()
-    HomeScreen(uiState = uiState, viewModel, navigateToProfile)
-}
+    val loginState: LoggingScreenState by viewModel.loggingState.collectAsStateWithLifecycle()
+    val uiState: HomeScreenState by viewModel.homeState.collectAsStateWithLifecycle()
 
-@Composable
-private fun HomeScreen(
-    uiState: LoggingScreenState,
-    viewModel: HomeViewModel,
-    navigateToProfile: () -> Unit
-) {
-
-    when(val state = uiState.state){
+    when(val state = loginState.state){
         LoggingUIState.LoggedIn -> {
-            HomeScreenContent(viewModel)
+            HomeScreenContent(uiState, viewModel::fetchData)
         }
         LoggingUIState.NotLoggedIn -> {
             LaunchedEffect(state) {
@@ -46,34 +36,32 @@ private fun HomeScreen(
     }
 }
 @OptIn(ExperimentalMaterial3Api::class)
-
 @Composable
-fun HomeScreenContent(viewModel: HomeViewModel) {
-    val uiState: HomeScreenState by viewModel.homeState.collectAsStateWithLifecycle()
-
+private fun HomeScreenContent(uiState: HomeScreenState, fetchData: (index: Int) -> Unit) {
     Scaffold(
         topBar = {}
     ) { paddingValues ->
-        when(val state = uiState.state){
-            is HomeUIState.Loaded -> {
-                LoadedState(
-                    subjects = state.data.subjects,
-                    modifier = Modifier.padding(paddingValues),
-                    fetchData = viewModel::fetchData
-                )
-            }
-            HomeUIState.Loading -> {
-                LoadingState()
+        Column(modifier = Modifier.padding(paddingValues)) {
+            SpinnerList(fetchData = fetchData)
+            when(val state = uiState.state){
+                is HomeUIState.Loaded -> {
+                    LoadedState(
+                        subjects = state.data.subjects,
+                        modifier = Modifier.padding(paddingValues)
+                    )
+                }
+                HomeUIState.Loading -> {
+                    LoadingState()
+                }
             }
         }
     }
 
 }
 @Composable
-fun LoadedState(modifier: Modifier ,subjects: List<User.Subject>?, fetchData: (index: Int) -> Unit) {
+private fun LoadedState(modifier: Modifier ,subjects: List<User.Subject>?) {
     Column(modifier = modifier.fillMaxSize()) {
         if (subjects != null) {
-            SpinnerList(fetchData = fetchData)
             LazyColumn(contentPadding = PaddingValues(all = 8.dp), modifier = Modifier.weight(1f)) {
                 items(subjects) {
                     SubjectItem(subject = it)
@@ -84,7 +72,7 @@ fun LoadedState(modifier: Modifier ,subjects: List<User.Subject>?, fetchData: (i
 }
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun SpinnerList(fetchData: (index: Int) -> Unit) {
+private fun SpinnerList(fetchData: (index: Int) -> Unit) {
     val options = listOf("Monday", "Tuesday", "Wednesday", "Thursday", "Friday")
 
     var expanded by remember { mutableStateOf(false) }
@@ -100,9 +88,7 @@ fun SpinnerList(fetchData: (index: Int) -> Unit) {
             modifier = Modifier.fillMaxWidth(),
             readOnly = true,
             value = selectedOptionText,
-            onValueChange = {
-                Log.i("SpinnerList: ", "SpinnerList: $it")
-            },
+            onValueChange = {},
             label = { Text("Day of week") },
             trailingIcon = {
                 ExposedDropdownMenuDefaults.TrailingIcon(
@@ -126,7 +112,6 @@ fun SpinnerList(fetchData: (index: Int) -> Unit) {
                     }
                 ) {
                     Text(text = selectionOption)
-
                 }
             }
         }
@@ -134,7 +119,7 @@ fun SpinnerList(fetchData: (index: Int) -> Unit) {
 }
 
 @Composable
-private fun LoadingState() {
+fun LoadingState() {
     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
         CircularProgressIndicator()
     }
@@ -142,7 +127,7 @@ private fun LoadingState() {
 
 
 @Composable
-fun SubjectItem(subject: User.Subject) {
+private fun SubjectItem(subject: User.Subject) {
     Card(
         modifier = Modifier
             .padding(10.dp)

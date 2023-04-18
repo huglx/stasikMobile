@@ -46,6 +46,9 @@ android {
             excludes += '/META-INF/{AL2.0,LGPL2.1}'
         }
     }
+    ksp  {
+        arg("room.schemaLocation", "$projectDir/schemas".toString())
+    }
 }
 
 dependencies {
@@ -53,6 +56,10 @@ dependencies {
 
     implementation 'androidx.core:core-ktx:1.9.0'
     implementation 'androidx.activity:activity-compose:1.7.0'
+    implementation 'androidx.test:monitor:1.5.0'
+    implementation 'androidx.test.ext:junit-ktx:1.1.5'
+    implementation 'androidx.compose.foundation:foundation:1.4.1'
+
 
     def lifecycleVersion = "2.6.1"
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycleVersion"
@@ -84,5 +91,7 @@ dependencies {
     implementation "io.insert-koin:koin-androidx-compose:3.4.3"
 
     implementation "androidx.datastore:datastore-preferences:1.0.0"
+    implementation "io.coil-kt:coil-compose:2.3.0"
+
 
 }
