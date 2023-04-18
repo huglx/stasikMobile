@@ -4,12 +4,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import cz.fit.cvut.stasikmobile.core.data.datastore.UserProfileSource
 import cz.fit.cvut.stasikmobile.features.profile.data.LoginRepository
+import cz.fit.cvut.stasikmobile.features.profile.usecases.GetLastLoginStateUseCase
+import cz.fit.cvut.stasikmobile.features.profile.usecases.LoginUseCase
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
 class ProfileViewModel (
-    private val userProfileSource: UserProfileSource,
-    private val loginRepository: LoginRepository
+    private val getLastLoginState: GetLastLoginStateUseCase,
+    private val loginUseCase: LoginUseCase
 ): ViewModel() {
 
     private val _screenStateStream = MutableStateFlow(ProfileScreenState())
@@ -17,10 +19,11 @@ class ProfileViewModel (
 
     init {
         viewModelScope.launch {
+            val (name, logged) = getLastLoginState.invoke()
             _screenStateStream.update { state ->
                 state.copy(
-                    name = userProfileSource.getName().first(),
-                    nameWasCompleted = userProfileSource.getLogged().first()
+                    name = name.first(),
+                    nameWasCompleted = logged.first()
                 )
             }
         }
@@ -35,15 +38,13 @@ class ProfileViewModel (
     }
 
     fun saveNameAndLogin() {
-        val userName = screenState.value.name
+        val name = _screenStateStream.value.name
         viewModelScope.launch {
-            if(login(userName)) {
-                userProfileSource.setName(screenState.value.name)
-                userProfileSource.setLogged(true)
+            if(loginUseCase.invoke(name)) {
                 _screenStateStream.update { state ->
                     state.copy(
-                        name = userProfileSource.getName().first(),
-                        nameWasCompleted = userProfileSource.getLogged().first(),
+                        name = name,
+                        nameWasCompleted = true,
                         nameIsWrong = false
                     )
                 }
@@ -56,11 +57,6 @@ class ProfileViewModel (
                 }
             }
         }
-    }
-
-    private suspend fun login(userName: String): Boolean {
-        val result = loginRepository.getUsersList()
-        return result.users.contains(userName.replace(" ", ""))
     }
 }
 
