@@ -2,10 +2,12 @@ package cz.fit.cvut.stasikmobile
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.*
+import androidx.compose.material.BottomNavigation
+import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -47,6 +49,7 @@ sealed class Screens(val route: String) {
     object ProfileRoute: Screens("profile")
 
 }
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Navigation() {
     val navController = rememberNavController()
@@ -83,7 +86,9 @@ fun BottomBar(navController: NavController) {
     if (currentDestination == null || currentDestination.route == Screens.ProfileRoute.route) {
         return
     }
-    BottomNavigation {
+    BottomNavigation(
+        backgroundColor = MaterialTheme.colorScheme.primaryContainer
+    ) {
         Screens.TopLevel.all.forEach { screen ->
             BottomNavigationItem(
                 icon = { Icon(screen.icon, contentDescription = null) },

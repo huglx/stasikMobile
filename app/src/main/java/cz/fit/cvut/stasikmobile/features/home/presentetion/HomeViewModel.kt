@@ -1,5 +1,6 @@
 package cz.fit.cvut.stasikmobile.features.home.presentetion
 
+import android.icu.text.CaseMap.Title
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import cz.fit.cvut.stasikmobile.core.data.datastore.UserProfileSource
@@ -37,6 +38,10 @@ class HomeViewModel(
         }
     }
 
+    fun getDaysOfWeek(): List<String> {
+        return listOf("Monday", "Tuesday", "Wednesday", "Thursday", "Friday")
+    }
+
     fun fetchData(index: Int) {
         viewModelScope.launch {
             _homeState.value = HomeScreenState(HomeUIState.Loading)
@@ -47,7 +52,7 @@ class HomeViewModel(
             }
             findOverlapWithOthers(users, user)
 
-            _homeState.value = HomeScreenState(HomeUIState.Loaded(user))
+            _homeState.value = HomeScreenState(HomeUIState.Loaded(user, getDaysOfWeek()[index]))
         }
     }
 
@@ -70,7 +75,7 @@ class HomeViewModel(
     }
 }
 sealed interface HomeUIState{
-    data class Loaded(val data: User): HomeUIState
+    data class Loaded(val data: User, val topBarTitle: String): HomeUIState
 
     object Loading: HomeUIState
 }
