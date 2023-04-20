@@ -1,4 +1,4 @@
-package cz.fit.cvut.stasikmobile.features.profile.usecases
+package cz.fit.cvut.stasikmobile.usecases
 
 import cz.fit.cvut.stasikmobile.core.data.datastore.UserProfileSource
 import cz.fit.cvut.stasikmobile.features.profile.data.LoginRepository

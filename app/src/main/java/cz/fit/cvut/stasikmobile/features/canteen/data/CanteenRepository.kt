@@ -16,7 +16,7 @@ class CanteenRepository(
                 CanteenResponse(result, true)
                 }
             else
-                CanteenResponse(canteenLocalDataSource.getCanteen(0), true)
+                CanteenResponse(canteenLocalDataSource.getCanteen(0), false)
         }catch (t: Throwable) {
             Log.i("getCanteen: ", t.message.toString())
             CanteenResponse(canteenLocalDataSource.getCanteen(0), false)

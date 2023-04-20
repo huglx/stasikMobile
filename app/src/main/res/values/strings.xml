@@ -4,6 +4,8 @@
     <string name="bottom_nav_title_profile">Profile</string>
 
     <string name="bottom_nav_title_canteen">Canteen</string>
+    <string name="card_text_same_lecture">Same lecture with: </string>
+    <string name="card_text_time">Starts at </string>
 
-    <string name="outdated_data_message">Data fetch failed. Outdated data.</string>
+    <string name="outdated_data_message">Data fetch failed. Outdated data. Or maybe canteen is closed now :(</string>
 </resources>

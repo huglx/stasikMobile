@@ -1,27 +1,25 @@
-package cz.fit.cvut.stasikmobile.features.profile
+package cz.fit.cvut.stasikmobile.features.profile.settings
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.Button
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import cz.fit.cvut.stasikmobile.features.profile.login.LoginViewModel
+import cz.fit.cvut.stasikmobile.features.profile.login.ShowError
+import cz.fit.cvut.stasikmobile.features.profile.login.ShowSuccess
+import cz.fit.cvut.stasikmobile.features.profile.login.UserInput
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun ProfileScreen(
-    viewModel: ProfileViewModel = koinViewModel(),
+fun SettingsScreen(
+    viewModel: LoginViewModel = koinViewModel(),
     navigateToHome: () -> Unit
 ) {
     val uiState by viewModel.screenState.collectAsStateWithLifecycle()
-
-    if(uiState.nameWasCompleted) {
-        LaunchedEffect(Unit) {
-            navigateToHome()
-        }
-    }
-
     Column(
         Modifier
             .fillMaxWidth()
@@ -42,29 +40,10 @@ fun ProfileScreen(
         if(uiState.nameIsWrong) {
             ShowError()
         }
+
+        if(!uiState.nameIsWrong) {
+            ShowSuccess()
+        }
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun UserInput(
-    input: String,
-    onNameChanged: (String) -> Unit
-) {
-    TextField(
-        value = input,
-        onValueChange = {
-                value -> onNameChanged(value)
-        },
-        modifier = Modifier.fillMaxWidth(),
-    )
-}
-@Composable
-fun ShowError() {
-    Text(
-        text = "Дурак блин введи еще раз",
-        color = Color.Red,
-        style = MaterialTheme.typography.bodySmall,
-        modifier = Modifier.padding(start = 16.dp)
-    )
-}

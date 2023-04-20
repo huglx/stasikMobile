@@ -1,15 +1,13 @@
-package cz.fit.cvut.stasikmobile.features.profile
+package cz.fit.cvut.stasikmobile.features.profile.login
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import cz.fit.cvut.stasikmobile.core.data.datastore.UserProfileSource
-import cz.fit.cvut.stasikmobile.features.profile.data.LoginRepository
-import cz.fit.cvut.stasikmobile.features.profile.usecases.GetLastLoginStateUseCase
-import cz.fit.cvut.stasikmobile.features.profile.usecases.LoginUseCase
+import cz.fit.cvut.stasikmobile.usecases.GetLastLoginStateUseCase
+import cz.fit.cvut.stasikmobile.usecases.LoginUseCase
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
-class ProfileViewModel (
+class LoginViewModel (
     private val getLastLoginState: GetLastLoginStateUseCase,
     private val loginUseCase: LoginUseCase
 ): ViewModel() {
@@ -37,7 +35,7 @@ class ProfileViewModel (
         }
     }
 
-    fun saveNameAndLogin() {
+    fun saveNameAndLogin(){
         val name = _screenStateStream.value.name
         viewModelScope.launch {
             if(loginUseCase.invoke(name)) {
