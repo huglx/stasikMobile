@@ -1,4 +1,4 @@
-package cz.fit.cvut.stasikmobile.features.profile.login
+package cz.fit.cvut.stasikmobile.features.profile.presentetion.login
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

@@ -102,7 +102,7 @@ fun CanteenItem(item: CanteenItem) {
 private fun OutdatedDataBanner(show: Boolean) {
     if (show) {
         Text(
-            text = stringResource(R.string.outdated_data_message),
+            text = stringResource(R.string.outdated_data_message_canteen),
             modifier = Modifier
                 .background(color = MaterialTheme.colorScheme.errorContainer)
                 .fillMaxWidth()

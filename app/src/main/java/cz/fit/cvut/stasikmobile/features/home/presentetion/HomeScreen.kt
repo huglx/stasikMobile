@@ -76,6 +76,9 @@ private fun HomeScreenContent(
                 HomeUIState.Loading -> {
                     LoadingState()
                 }
+                HomeUIState.Error -> {
+                    OutdatedDataBanner()
+                }
             }
         }
     }
@@ -166,15 +169,6 @@ private fun SpinnerList(
     }
 }
 
-
-
-@Composable
-fun LoadingState() {
-    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-        CircularProgressIndicator()
-    }
-}
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CharactersListAppBar(title: String, navigateToSettings: () -> Unit) {
@@ -192,4 +186,22 @@ fun CharactersListAppBar(title: String, navigateToSettings: () -> Unit) {
         },
 
     )
+}
+
+@Composable
+private fun OutdatedDataBanner() {
+    Text(
+        text = stringResource(R.string.outdated_data_message_home),
+        modifier = Modifier
+            .background(color = MaterialTheme.colorScheme.errorContainer)
+            .fillMaxWidth()
+            .padding(16.dp),
+    )
+}
+
+@Composable
+fun LoadingState() {
+    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+        CircularProgressIndicator()
+    }
 }

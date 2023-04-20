@@ -19,8 +19,8 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import cz.fit.cvut.stasikmobile.features.canteen.presentetion.CanteenScreen
 import cz.fit.cvut.stasikmobile.features.home.presentetion.HomeScreen
-import cz.fit.cvut.stasikmobile.features.profile.login.ProfileScreen
-import cz.fit.cvut.stasikmobile.features.profile.settings.SettingsScreen
+import cz.fit.cvut.stasikmobile.features.profile.presentetion.login.ProfileScreen
+import cz.fit.cvut.stasikmobile.features.profile.presentetion.settings.SettingsScreen
 
 
 sealed class Screens(val route: String) {

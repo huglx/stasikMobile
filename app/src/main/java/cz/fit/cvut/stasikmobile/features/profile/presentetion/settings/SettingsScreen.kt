@@ -1,4 +1,4 @@
-package cz.fit.cvut.stasikmobile.features.profile.settings
+package cz.fit.cvut.stasikmobile.features.profile.presentetion.settings
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Button
@@ -8,10 +8,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import cz.fit.cvut.stasikmobile.features.profile.login.LoginViewModel
-import cz.fit.cvut.stasikmobile.features.profile.login.ShowError
-import cz.fit.cvut.stasikmobile.features.profile.login.ShowSuccess
-import cz.fit.cvut.stasikmobile.features.profile.login.UserInput
+import cz.fit.cvut.stasikmobile.features.profile.presentetion.login.LoginViewModel
+import cz.fit.cvut.stasikmobile.features.profile.presentetion.login.ShowError
+import cz.fit.cvut.stasikmobile.features.profile.presentetion.login.ShowSuccess
+import cz.fit.cvut.stasikmobile.features.profile.presentetion.login.UserInput
 import org.koin.androidx.compose.koinViewModel
 
 @Composable

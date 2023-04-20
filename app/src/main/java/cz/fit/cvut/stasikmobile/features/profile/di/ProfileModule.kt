@@ -1,7 +1,7 @@
 package cz.fit.cvut.stasikmobile.features.profile.di
 
 import org.koin.androidx.viewmodel.dsl.viewModelOf
-import cz.fit.cvut.stasikmobile.features.profile.login.LoginViewModel
+import cz.fit.cvut.stasikmobile.features.profile.presentetion.login.LoginViewModel
 import cz.fit.cvut.stasikmobile.features.profile.data.LoginRemoteDataSource
 import cz.fit.cvut.stasikmobile.features.profile.data.api.LoginApiDescription
 import cz.fit.cvut.stasikmobile.features.profile.data.api.LoginRetrofitDataSource

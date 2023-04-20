@@ -7,5 +7,7 @@
     <string name="card_text_same_lecture">Same lecture with: </string>
     <string name="card_text_time">Starts at </string>
 
-    <string name="outdated_data_message">Data fetch failed. Outdated data. Or maybe canteen is closed now :(</string>
+    <string name="outdated_data_message_canteen">Data fetch failed. Outdated data. Or maybe canteen is closed now :(</string>
+    <string name="outdated_data_message_home">Data fetch failed. Outdated data.</string>
+
 </resources>

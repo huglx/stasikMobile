@@ -1,4 +1,4 @@
-package cz.fit.cvut.stasikmobile.features.profile.login
+package cz.fit.cvut.stasikmobile.features.profile.presentetion.login
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*

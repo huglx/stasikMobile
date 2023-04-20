@@ -40,11 +40,17 @@ class HomeViewModel(
         viewModelScope.launch {
             _homeState.value = HomeScreenState(HomeUIState.Loading)
             val userName = getLastLoginStateUseCase.invoke().first.first()
-            val users = repository.getUsers().users[index]
-            val user = users.first {
+            val usersResponse = repository.getUsers()
+
+            if(!usersResponse.isSuccess){
+                _homeState.value = HomeScreenState(HomeUIState.Error)
+                return@launch
+            }
+
+            val user = usersResponse.users[index].first {
                 it.username == userName
             }
-            findOverlapWithOthers(users, user)
+            findOverlapWithOthers(usersResponse.users[index], user)
 
             _homeState.value = HomeScreenState(HomeUIState.Loaded(user, getDaysOfWeek()[index], userName))
         }
@@ -79,6 +85,8 @@ sealed interface HomeUIState{
     ): HomeUIState
 
     object Loading: HomeUIState
+
+    object Error: HomeUIState
 }
 
 data class HomeScreenState(
