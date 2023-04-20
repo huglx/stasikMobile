@@ -1,6 +1,5 @@
 package cz.fit.cvut.stasikmobile.features.canteen.data
 
-import android.util.Log
 import cz.fit.cvut.stasikmobile.features.canteen.domain.CanteenResponse
 
 class CanteenRepository(
@@ -18,7 +17,6 @@ class CanteenRepository(
             else
                 CanteenResponse(canteenLocalDataSource.getCanteen(0), false)
         }catch (t: Throwable) {
-            Log.i("getCanteen: ", t.message.toString())
             CanteenResponse(canteenLocalDataSource.getCanteen(0), false)
         }
     }

@@ -5,8 +5,10 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import cz.fit.cvut.stasikmobile.R
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -22,26 +24,40 @@ fun ProfileScreen(
         }
     }
 
+    ProfileScreen(
+        uiState.name,
+        viewModel::onNameChanged,
+        viewModel::saveNameAndLogin,
+        uiState.nameIsWrong
+    )
+}
+
+@Composable
+private fun ProfileScreen(
+    name: String,
+    onNameChanged: (String) -> Unit,
+    saveNameAndLogin: () -> Unit,
+    nameIsWrong: Boolean,
+) {
     Column(
         Modifier
             .fillMaxWidth()
             .padding(10.dp)
     ) {
 
-        Text("Введи блин свой ник в косе потом сможеш поменять)")
+        Text(stringResource(R.string.user_input_nick))
         Spacer(Modifier.height(4.dp))
-        UserInput(uiState.name, viewModel::onNameChanged)
+        UserInput(name, onNameChanged)
 
         Button(
-            onClick = { viewModel.saveNameAndLogin() },
+            onClick = saveNameAndLogin,
             modifier = Modifier.fillMaxWidth(),
         ) {
             Text("ВПЕРЕД")
         }
 
-        if(uiState.nameIsWrong) {
+        if(nameIsWrong)
             ShowError()
-        }
     }
 }
 
@@ -62,8 +78,8 @@ fun UserInput(
 @Composable
 fun ShowError() {
     Text(
-        text = "Дурак блин введи еще раз",
-        color = Color.Red,
+        text = stringResource(id = R.string.user_input_error),
+        color = MaterialTheme.colorScheme.error,
         style = MaterialTheme.typography.bodySmall,
         modifier = Modifier.padding(start = 16.dp)
     )
@@ -72,8 +88,8 @@ fun ShowError() {
 @Composable
 fun ShowSuccess() {
     Text(
-        text = "Такой ник сущесвтует в дб молодец ",
-        color = MaterialTheme.colorScheme.onBackground,
+        text =stringResource(id = R.string.user_input_success),
+        color = Color.Green,
         style = MaterialTheme.typography.bodySmall,
         modifier = Modifier.padding(start = 16.dp)
     )

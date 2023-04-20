@@ -10,4 +10,9 @@
     <string name="outdated_data_message_canteen">Data fetch failed. Outdated data. Or maybe canteen is closed now :(</string>
     <string name="outdated_data_message_home">Data fetch failed. Outdated data.</string>
 
+    <string name="user_input_nick">Insert your kos Nickname </string>
+    <string name="user_input_error">Error, try again:( </string>
+    <string name="user_input_success">Good! Your nickname is saved </string>
+    <string name="app_bar_settings">Settings</string>
+
 </resources>
