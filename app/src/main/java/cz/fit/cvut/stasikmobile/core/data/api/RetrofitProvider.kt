@@ -10,7 +10,6 @@ object RetrofitProvider {
 
     private val json = Json { ignoreUnknownKeys = true }
 
-
     @OptIn(ExperimentalSerializationApi::class)
     fun provide(): Retrofit {
         return Retrofit.Builder()

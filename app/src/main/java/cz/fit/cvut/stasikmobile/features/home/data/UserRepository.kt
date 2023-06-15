@@ -10,7 +10,7 @@ class UserRepository(private val userRemoteDataSource: UserRemoteDataSource) {
             val result = userRemoteDataSource.getUsers()
             UserResponse(result, true)
         }catch (t: Throwable){
-            t.message?.let { Log.i("asdasd", it) }
+            t.message?.let {  }
             UserResponse(listOf(), false)
         }
     }

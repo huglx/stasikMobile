@@ -53,7 +53,7 @@ private fun ProfileScreen(
             onClick = saveNameAndLogin,
             modifier = Modifier.fillMaxWidth(),
         ) {
-            Text("ВПЕРЕД")
+            Text(stringResource(id = R.string.button_text_go))
         }
 
         if(nameIsWrong)
